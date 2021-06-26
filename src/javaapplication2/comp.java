@@ -44,38 +44,85 @@ public class comp {
 
                 WebDriver driver=new ChromeDriver();
                 driver.get(url1);
+                String price1;
+                try{
                 WebElement b_nuCI =driver.findElement(By.xpath("//div[@class='_30jeq3 _16Jk6d']"));
-                String price1=b_nuCI.getText();
+                price1=b_nuCI.getText();driver.close();}catch(Exception e1)
+                {
+                    price1="";
+                    driver.close();
+                }
                 float price=Float.parseFloat(price1.replaceAll("[^0-9.]",""));
                 this.fprice=price;
-                System.out.println("Flipkart price= "+b_nuCI.getText());
+                
+                System.out.println("Flipkart price= "+price1);
                 System.out.println(price);
-                driver.close();
+                
                 
                 WebDriver driver1=new ChromeDriver();
+                String price2;
                 driver1.get(url2);
+                try{
                 WebElement amazon=driver1.findElement(By.xpath("//span[@id='priceblock_dealprice']"));
-                String price2=amazon.getText();
-                System.out.println("Amazon price= "+price2);
+                price2=amazon.getText();
+                driver1.close();
+                }catch(Exception e)
+                {
+                    driver1.close();
+                    WebDriver driverC=new ChromeDriver();
+                    driverC.get(url2);
+                    WebElement amazon=driverC.findElement(By.xpath("//span[@id='priceblock_ourprice']"));
+                    price2=amazon.getText();
+                    driverC.close();
+                }
+                
                 float price3=Float.parseFloat(price2.replaceAll("[^0-9.]",""));
                 this.aprice=price3;
+                System.out.println("Amazon price= "+this.aprice);
+                if(this.aprice==null)
+                {
+                    this.aprice=Float.MAX_VALUE;
+                }
                 System.out.println(price3);
-                driver1.close();
+                
                 
                 WebDriver driver2=new ChromeDriver();
                 driver2.get(url3);
-                WebElement croma=driver2.findElement(By.xpath("//span[@class='amount']"));
-                String price4=croma.getText();
+                String price4;
+                try{
+                    WebElement croma=driver2.findElement(By.xpath("//span[@class='amount']"));
+                    price4=croma.getText();
+                    driver2.close();
+                }
+                catch(Exception e2)
+                {
+                    price4="";
+                    
+                }
+                
                 System.out.println("croma price= "+price4);
                 float price5=Float.parseFloat(price4.replaceAll("[^0-9.]",""));
                 this.cprice=price5;
+                if(this.cprice==null)
+                {
+                    this.cprice=Float.MAX_VALUE;
+                }
                 System.out.println(price5);
-                driver2.close();
+             
                 
                 HashMap <String, Float>Map=new HashMap<>();
-                Map.put("Flipkart",price);
-                Map.put("Amazon",price3);
-                Map.put("Croma",price5);
+                if(this.fprice!=Float.MAX_VALUE)
+                {
+                Map.put("Flipkart",this.fprice);
+                }
+                if(this.aprice!=Float.MAX_VALUE)
+                {
+                Map.put("Amazon",this.aprice);
+                }
+                if(this.cprice!=Float.MAX_VALUE)
+                {
+                Map.put("Croma",this.cprice);
+                }
                 String res=new String();
                 Float minValueInMap=(Collections.min(Map.values()));  // This will return max value in the Hashmap
                 minPrice=minValueInMap;
