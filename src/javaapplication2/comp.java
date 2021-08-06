@@ -68,12 +68,21 @@ public class comp {
                 driver1.close();
                 }catch(Exception e)
                 {
+                     WebDriver driverC=new ChromeDriver();
+                    try{
                     driver1.close();
-                    WebDriver driverC=new ChromeDriver();
+                   
                     driverC.get(url2);
                     WebElement amazon=driverC.findElement(By.xpath("//span[@id='priceblock_ourprice']"));
                     price2=amazon.getText();
                     driverC.close();
+                    }
+                    catch(Exception en)
+                    {
+                        price2="";
+                        driverC.close();
+                      
+                    }
                 }
                 
                 float price3=Float.parseFloat(price2.replaceAll("[^0-9.]",""));
@@ -124,7 +133,7 @@ public class comp {
                 Map.put("Croma",this.cprice);
                 }
                 String res=new String();
-                Float minValueInMap=(Collections.min(Map.values()));  // This will return max value in the Hashmap
+                Float minValueInMap=(Collections.min(Map.values())); 
                 minPrice=minValueInMap;
                 for(String i: Map.keySet())
                 {
